@@ -1,0 +1,41 @@
+/*
+ * Diagonal, tiled student-ID watermark shown behind the quiz content.
+ *
+ * The container is fixed and oversized (200% / negative inset) so that once
+ * it is rotated there are no empty corners. pointer-events:none lets every
+ * click and keypress pass straight through to the quiz, so the watermark is
+ * purely visual and never interferes with answering.
+ */
+.local-quizidnumber-watermark {
+    position: fixed;
+    inset: -50%;
+    width: 200%;
+    height: 200%;
+    z-index: 1000;
+    pointer-events: none;
+    user-select: none;
+    overflow: hidden;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+    gap: 4.5rem 6rem;
+    transform: rotate(-30deg);
+    transform-origin: center center;
+}
+
+.local-quizidnumber-wm-item {
+    color: rgba(15, 23, 42, 0.07);
+    font-size: 1.6rem;
+    font-weight: 700;
+    white-space: nowrap;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+/* Keep the watermark visible on printed copies of the attempt/review. */
+@media print {
+    .local-quizidnumber-wm-item {
+        color: rgba(15, 23, 42, 0.12);
+    }
+}
