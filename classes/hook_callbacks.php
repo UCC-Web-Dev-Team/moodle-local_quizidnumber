@@ -47,31 +47,38 @@ class hook_callbacks {
     public static function before_standard_top_of_body_html(
         before_standard_top_of_body_html_generation $hook
     ): void {
-        global $PAGE, $DB;
+        global $PAGE, $DB, $USER;
 
         // Only act on quiz attempt and review pages.
         if (!in_array($PAGE->pagetype, self::TARGET_PAGETYPES, true)) {
             return;
         }
 
-        // Both attempt.php and review.php carry the attempt id in the URL.
+        // Default to the logged-in user. On attempt.php this IS the student
+        // taking the quiz, so the watermark is always correct here even if the
+        // attempt lookup below cannot run for any reason.
+        $idnumber = $USER->idnumber ?? '';
+
+        // On review.php the attempt may belong to a different user (e.g. a
+        // teacher reviewing a student's attempt), so prefer the attempt owner.
+        // Catch *any* error/exception so a lookup problem never blanks the
+        // watermark — we simply fall back to the logged-in user's ID number.
         $attemptid = optional_param('attempt', 0, PARAM_INT);
-        if (!$attemptid) {
-            return;
+        if ($attemptid) {
+            try {
+                $attemptobj = quiz_attempt::create($attemptid);
+                $owner = $DB->get_field('user', 'idnumber', ['id' => $attemptobj->get_userid()]);
+                if ($owner !== false) {
+                    $idnumber = $owner;
+                }
+            } catch (\Throwable $e) {
+                // Keep the logged-in user's ID number as the fallback.
+                debugging('local_quizidnumber: attempt lookup failed: ' . $e->getMessage(),
+                    DEBUG_DEVELOPER);
+            }
         }
 
-        try {
-            $attemptobj = quiz_attempt::create($attemptid);
-        } catch (\moodle_exception $e) {
-            // Attempt no longer exists / not accessible: render nothing.
-            return;
-        }
-
-        // Resolve the ID number of the student who owns the attempt
-        // (works whether the student or a teacher is viewing the review).
-        $idnumber = $DB->get_field('user', 'idnumber', ['id' => $attemptobj->get_userid()]);
-
-        if ($idnumber === false || trim((string) $idnumber) === '') {
+        if (trim((string) $idnumber) === '') {
             $idnumber = get_string('noidnumber', 'local_quizidnumber');
         }
 

@@ -25,7 +25,8 @@
 }
 
 .local-quizidnumber-wm-item {
-    color: rgba(15, 23, 42, 0.07);
+    /* Mid-grey reads on both light content and dark theme margins. */
+    color: rgba(128, 128, 128, 0.28);
     font-size: 1.6rem;
     font-weight: 700;
     white-space: nowrap;
@@ -36,6 +37,6 @@
 /* Keep the watermark visible on printed copies of the attempt/review. */
 @media print {
     .local-quizidnumber-wm-item {
-        color: rgba(15, 23, 42, 0.12);
+        color: rgba(80, 80, 80, 0.35);
     }
 }
