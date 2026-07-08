@@ -25,7 +25,6 @@
 namespace local_quizidnumber;
 
 use core\hook\output\before_standard_top_of_body_html_generation;
-use mod_quiz\quiz_attempt;
 
 /**
  * Callbacks that inject the student ID number into quiz pages.
@@ -47,43 +46,29 @@ class hook_callbacks {
     public static function before_standard_top_of_body_html(
         before_standard_top_of_body_html_generation $hook
     ): void {
-        global $PAGE, $DB, $USER;
+        global $PAGE, $USER;
 
         // Only act on quiz attempt and review pages.
         if (!in_array($PAGE->pagetype, self::TARGET_PAGETYPES, true)) {
             return;
         }
 
-        // Default to the logged-in user. On attempt.php this IS the student
-        // taking the quiz, so the watermark is always correct here even if the
-        // attempt lookup below cannot run for any reason.
-        $idnumber = $USER->idnumber ?? '';
-
-        // On review.php the attempt may belong to a different user (e.g. a
-        // teacher reviewing a student's attempt), so prefer the attempt owner.
-        // Catch *any* error/exception so a lookup problem never blanks the
-        // watermark — we simply fall back to the logged-in user's ID number.
-        $attemptid = optional_param('attempt', 0, PARAM_INT);
-        if ($attemptid) {
-            try {
-                $attemptobj = quiz_attempt::create($attemptid);
-                $owner = $DB->get_field('user', 'idnumber', ['id' => $attemptobj->get_userid()]);
-                if ($owner !== false) {
-                    $idnumber = $owner;
-                }
-            } catch (\Throwable $e) {
-                // Keep the logged-in user's ID number as the fallback.
-                debugging('local_quizidnumber: attempt lookup failed: ' . $e->getMessage(),
-                    DEBUG_DEVELOPER);
-            }
+        // Only students see the watermark. Anyone who can grade or view the
+        // quiz reports (teachers, managers, admins) is excluded, so a teacher
+        // reviewing a student's attempt is never watermarked with an ID number.
+        if (has_capability('mod/quiz:viewreports', $PAGE->context)) {
+            return;
         }
 
-        if (trim((string) $idnumber) === '') {
+        // A non-privileged user can only ever reach the attempt or review page
+        // for their *own* attempt, so the watermark is simply their ID number.
+        $idnumber = trim((string) ($USER->idnumber ?? ''));
+        if ($idnumber === '') {
             $idnumber = get_string('noidnumber', 'local_quizidnumber');
         }
 
-        $label = get_string('studentid', 'local_quizidnumber');
-        $text  = s($label . ': ' . $idnumber);
+        // Show just the ID number itself — no label prefix.
+        $text = s($idnumber);
 
         // Build a tiled, repeated watermark that the CSS rotates diagonally
         // across the whole page. The number of tiles is generous so the
