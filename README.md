@@ -26,7 +26,7 @@ No settings, no database tables, no capabilities of its own.
 
 | | |
 |---|---|
-| Moodle | 4.4 or later (`2024042200`) — requires the hook system |
+| Moodle | 4.4 or later (`2024042200`) — requires the hook system. Includes 4.4, 4.5 and the 5.x series |
 | PHP | As required by your Moodle version |
 | Plugin type | `local` |
 | Component | `local_quizidnumber` |
@@ -35,10 +35,37 @@ Moodle 4.4 introduced the hook API this plugin uses
 (`\core\hook\output\before_standard_top_of_body_html_generation`). It will not
 work on 4.3 or earlier.
 
+**Moodle 5.x.** The hook is unchanged in the 5.x series, and `version.php` sets
+no `$plugin->supported` upper bound, so there is no artificial version cap —
+the plugin is developed against Moodle 5.2. The only 5.x difference that affects
+you is the install path: sites using the newer layout keep their code under
+`public/`, so the plugin goes in `public/local/quizidnumber`. See
+[Installation](#installation).
+
 ## Installation
 
-The plugin must end up at `{moodleroot}/local/quizidnumber` — the directory name
-matters, Moodle derives the component name from it.
+The plugin must end up in your Moodle installation's `local/` directory, in a
+folder named `quizidnumber` — the directory name matters, Moodle derives the
+component name from it.
+
+**Where `local/` lives depends on your Moodle version:**
+
+| Layout | Plugin path |
+|---|---|
+| Moodle 4.4–4.5, and 5.x sites upgraded in place | `{moodleroot}/local/quizidnumber` |
+| Moodle 5.0+ installed with the newer layout (a `public/` directory at the Moodle root) | `{moodleroot}/public/local/quizidnumber` |
+
+Check which you have: if `ls` at your Moodle root shows a `public/` directory
+containing `config.php` and `index.php`, use the `public/local` path.
+
+The commands below use a `LOCALDIR` variable. Run **one** of these first, in the
+same shell, before running anything else in this section:
+
+```bash
+LOCALDIR=local          # Moodle 4.4–4.5, or 5.x upgraded in place
+# or
+LOCALDIR=public/local   # Moodle 5.0+ with the public/ layout
+```
 
 ### Option 1 — Git submodule (recommended)
 
@@ -48,7 +75,7 @@ version pinned and updatable alongside it.
 From your Moodle root:
 
 ```bash
-git submodule add git@github.com:UCC-Web-Dev-Team/quizidnumber.git local/quizidnumber
+git submodule add git@github.com:UCC-Web-Dev-Team/quizidnumber.git $LOCALDIR/quizidnumber
 git submodule update --init --recursive
 git commit -m "Add local_quizidnumber as a submodule"
 ```
@@ -56,18 +83,16 @@ git commit -m "Add local_quizidnumber as a submodule"
 Over HTTPS instead of SSH:
 
 ```bash
-git submodule add https://github.com/UCC-Web-Dev-Team/quizidnumber.git local/quizidnumber
+git submodule add https://github.com/UCC-Web-Dev-Team/quizidnumber.git $LOCALDIR/quizidnumber
 ```
 
 **Pin to a release tag.** A fresh submodule tracks whatever `main` pointed at
 when it was added. To pin it to a released version:
 
 ```bash
-cd local/quizidnumber
-git fetch --tags
-git checkout v1.0.0
-cd ../..
-git add local/quizidnumber
+git -C $LOCALDIR/quizidnumber fetch --tags
+git -C $LOCALDIR/quizidnumber checkout v1.0.0
+git add $LOCALDIR/quizidnumber
 git commit -m "Pin local_quizidnumber to v1.0.0"
 ```
 
@@ -82,11 +107,9 @@ git submodule update --init --recursive
 **Updating to a newer release:**
 
 ```bash
-cd local/quizidnumber
-git fetch --tags
-git checkout v1.1.0
-cd ../..
-git add local/quizidnumber
+git -C $LOCALDIR/quizidnumber fetch --tags
+git -C $LOCALDIR/quizidnumber checkout v1.1.0
+git add $LOCALDIR/quizidnumber
 git commit -m "Update local_quizidnumber to v1.1.0"
 ```
 
@@ -95,9 +118,9 @@ Then visit **Site administration → Notifications** to run the upgrade.
 **Removing the submodule:**
 
 ```bash
-git submodule deinit -f local/quizidnumber
-git rm -f local/quizidnumber
-rm -rf .git/modules/local/quizidnumber
+git submodule deinit -f $LOCALDIR/quizidnumber
+git rm -f $LOCALDIR/quizidnumber
+rm -rf .git/modules/$LOCALDIR/quizidnumber
 ```
 
 ### Option 2 — Plain Git clone
@@ -105,7 +128,7 @@ rm -rf .git/modules/local/quizidnumber
 Use this if your Moodle root is not under version control.
 
 ```bash
-cd /path/to/moodle/local
+cd /path/to/moodle/$LOCALDIR      # e.g. .../moodle/local or .../moodle/public/local
 git clone git@github.com:UCC-Web-Dev-Team/quizidnumber.git quizidnumber
 cd quizidnumber
 git checkout v1.0.0
@@ -121,7 +144,7 @@ git checkout v1.0.0
 Or unpack it manually:
 
 ```bash
-unzip local_quizidnumber.zip -d /path/to/moodle/local/
+unzip local_quizidnumber.zip -d /path/to/moodle/$LOCALDIR/
 ```
 
 The ZIP contains a top-level `quizidnumber/` folder, so it unpacks to the
@@ -221,7 +244,8 @@ Adjust the `z-index` on `.local-quizidnumber-watermark`.
 1. **Site administration → Plugins → Plugins overview**, find **Quiz student ID
    number**, choose **Uninstall**.
 2. Remove the directory — see the submodule removal commands above, or just
-   `rm -rf local/quizidnumber` for a plain clone.
+   `rm -rf $LOCALDIR/quizidnumber` for a plain clone (`local/quizidnumber` on
+   4.x, `public/local/quizidnumber` on the Moodle 5.0+ layout).
 3. Purge caches.
 
 ## Contributing
