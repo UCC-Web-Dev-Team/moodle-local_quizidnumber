@@ -6,7 +6,7 @@ deliberately light.
 ## Reporting issues
 
 Open an issue at
-<https://github.com/UCC-Web-Dev-Team/quizidnumber/issues> and include:
+<https://github.com/UCC-Web-Dev-Team/moodle-local_quizidnumber/issues> and include:
 
 - Moodle version and PHP version
 - Plugin version (from `version.php`) or release tag
@@ -20,7 +20,7 @@ Clone into a working Moodle install so you can test against a real site:
 
 ```bash
 cd /path/to/moodle/local
-git clone git@github.com:UCC-Web-Dev-Team/quizidnumber.git quizidnumber
+git clone git@github.com:UCC-Web-Dev-Team/moodle-local_quizidnumber.git quizidnumber
 ```
 
 Enable developer mode while working:

@@ -5,6 +5,22 @@ All notable changes to `local_quizidnumber` are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and
 this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- `LICENSE` file carrying the full GNU GPL v3 text at the plugin root, so the
+  licensing terms ship with the package.
+- GitHub Actions workflow (`.github/workflows/ci.yml`) running the
+  [moodle-plugin-ci](https://github.com/moodlehq/moodle-plugin-ci) checks
+  against Moodle 4.4, 4.5, 5.0, 5.1 and 5.2 on PostgreSQL and MariaDB.
+
+### Changed
+
+- Repository renamed to `moodle-local_quizidnumber` to follow the recommended
+  `moodle-{plugintype}_{pluginname}` pattern. The plugin directory inside
+  Moodle is unchanged and must still be `local/quizidnumber`.
+
 ## [1.0.0] — 2026-07-26
 
 First stable release.
@@ -30,4 +46,4 @@ First stable release.
 - Requires Moodle 4.4 (`2024042200`) or later for the hook API.
 - Plugin version: `2026063000`.
 
-[1.0.0]: https://github.com/UCC-Web-Dev-Team/quizidnumber/releases/tag/v1.0.0
+[1.0.0]: https://github.com/UCC-Web-Dev-Team/moodle-local_quizidnumber/releases/tag/v1.0.0

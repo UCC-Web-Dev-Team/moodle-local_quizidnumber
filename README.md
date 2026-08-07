@@ -1,5 +1,7 @@
 # Quiz student ID number (`local_quizidnumber`)
 
+[![Moodle Plugin CI](https://github.com/UCC-Web-Dev-Team/moodle-local_quizidnumber/actions/workflows/ci.yml/badge.svg)](https://github.com/UCC-Web-Dev-Team/moodle-local_quizidnumber/actions/workflows/ci.yml)
+
 A Moodle local plugin that overlays a student's ID number as a tiled, diagonal
 watermark across quiz **attempt** and **review** pages.
 
@@ -75,7 +77,7 @@ version pinned and updatable alongside it.
 From your Moodle root:
 
 ```bash
-git submodule add git@github.com:UCC-Web-Dev-Team/quizidnumber.git $LOCALDIR/quizidnumber
+git submodule add git@github.com:UCC-Web-Dev-Team/moodle-local_quizidnumber.git $LOCALDIR/quizidnumber
 git submodule update --init --recursive
 git commit -m "Add local_quizidnumber as a submodule"
 ```
@@ -83,7 +85,7 @@ git commit -m "Add local_quizidnumber as a submodule"
 Over HTTPS instead of SSH:
 
 ```bash
-git submodule add https://github.com/UCC-Web-Dev-Team/quizidnumber.git $LOCALDIR/quizidnumber
+git submodule add https://github.com/UCC-Web-Dev-Team/moodle-local_quizidnumber.git $LOCALDIR/quizidnumber
 ```
 
 **Pin to a release tag.** A fresh submodule tracks whatever `main` pointed at
@@ -129,7 +131,7 @@ Use this if your Moodle root is not under version control.
 
 ```bash
 cd /path/to/moodle/$LOCALDIR      # e.g. .../moodle/local or .../moodle/public/local
-git clone git@github.com:UCC-Web-Dev-Team/quizidnumber.git quizidnumber
+git clone git@github.com:UCC-Web-Dev-Team/moodle-local_quizidnumber.git quizidnumber
 cd quizidnumber
 git checkout v1.0.0
 ```
@@ -137,7 +139,7 @@ git checkout v1.0.0
 ### Option 3 — ZIP upload
 
 1. Download `local_quizidnumber.zip` from the
-   [Releases page](https://github.com/UCC-Web-Dev-Team/quizidnumber/releases).
+   [Releases page](https://github.com/UCC-Web-Dev-Team/moodle-local_quizidnumber/releases).
 2. Go to **Site administration → Plugins → Install plugins**.
 3. Upload the ZIP, choose plugin type **Local plugin (local)**, and install.
 
@@ -259,6 +261,7 @@ See [CHANGELOG.md](CHANGELOG.md).
 ## License
 
 GNU GPL v3 or later, matching Moodle itself.
-See <http://www.gnu.org/copyleft/gpl.html>.
+The full licence text ships with the plugin in [LICENSE](LICENSE); see also
+<http://www.gnu.org/copyleft/gpl.html>.
 
 Copyright © 2026 Clemence Ayekple.
