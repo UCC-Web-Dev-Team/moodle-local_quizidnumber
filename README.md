@@ -118,13 +118,8 @@ git commit -m "Update local_quizidnumber to v1.1.0"
 
 Then visit **Site administration → Notifications** to run the upgrade.
 
-**Removing the submodule:**
-
-```bash
-git submodule deinit -f $LOCALDIR/quizidnumber
-git rm -f $LOCALDIR/quizidnumber
-rm -rf .git/modules/$LOCALDIR/quizidnumber
-```
+**Removing it again:** a submodule needs more than deleting the directory — see
+[Uninstalling a submodule install](#uninstalling-a-submodule-install).
 
 ### Option 2 — Plain Git clone
 
@@ -248,12 +243,92 @@ Adjust the `z-index` on `.local-quizidnumber-watermark`.
 
 ## Uninstalling
 
-1. **Site administration → Plugins → Plugins overview**, find **Quiz student ID
-   number**, choose **Uninstall**.
-2. Remove the directory — see the submodule removal commands above, or just
-   `rm -rf $LOCALDIR/quizidnumber` for a plain clone (`local/quizidnumber` on
-   4.x, `public/local/quizidnumber` on the Moodle 5.0+ layout).
-3. Purge caches.
+Uninstall in two stages: tell Moodle first, then remove the files. That order
+matters — if the directory disappears first, Moodle flags the plugin as missing
+from disk and you have to clear it from the Plugins overview afterwards.
+
+### 1. Uninstall in Moodle
+
+1. Log in as an administrator.
+2. Go to **Site administration → Plugins → Plugins overview**.
+3. Find **Quiz student ID number** and choose **Uninstall**, then confirm.
+
+The plugin creates no database tables, settings or capabilities, so nothing is
+left behind in the database to clean up.
+
+### 2. Remove the files
+
+Set `LOCALDIR` first, exactly as during [Installation](#installation):
+
+```bash
+LOCALDIR=local          # Moodle 4.4–4.5, or 5.x upgraded in place
+# or
+LOCALDIR=public/local   # Moodle 5.0+ with the public/ layout
+```
+
+#### Uninstalling a submodule install
+
+If you installed with **Option 1**, `rm -rf` is not enough — Git tracks the
+submodule in three separate places, and deleting the directory leaves the other
+two behind. Run all four commands from your Moodle root:
+
+```bash
+git submodule deinit -f $LOCALDIR/quizidnumber
+git rm -f $LOCALDIR/quizidnumber
+rm -rf "$(git rev-parse --git-dir)/modules/$LOCALDIR/quizidnumber"
+git commit -m "Remove local_quizidnumber submodule"
+```
+
+| Command | What it clears |
+|---|---|
+| `git submodule deinit -f` | Empties the working directory and drops the `submodule.*` entry from `.git/config` |
+| `git rm -f` | Removes the path from the index and the entry from `.gitmodules` |
+| `rm -rf .../modules/...` | Deletes the submodule's own Git directory, which `deinit` leaves in place |
+| `git commit` | Records the removal — without it the change is only staged |
+
+> **Back up local changes first.** `deinit -f` discards uncommitted edits inside
+> the plugin directory without warning. If you customised `styles.css` in place,
+> copy it somewhere outside the tree before running this.
+
+Two notes on the details:
+
+- `$(git rev-parse --git-dir)` is used instead of a literal `.git` so the path
+  is right even when your Moodle root is a Git worktree or a submodule itself.
+- **Don't skip the third command.** `deinit` does not remove
+  `.git/modules/$LOCALDIR/quizidnumber`, and if it survives, re-adding the
+  plugin at the same path later fails with *"A git directory for
+  'local/quizidnumber' is found locally"*.
+
+If `local_quizidnumber` was the only submodule in the repository, `git rm`
+leaves `.gitmodules` behind as an empty tracked file. Removing it is optional
+tidying:
+
+```bash
+git rm -f .gitmodules
+git commit -m "Drop empty .gitmodules"
+```
+
+#### Uninstalling a clone or ZIP install
+
+Options 2 and 3 leave a plain directory, so deleting it is the whole job:
+
+```bash
+rm -rf $LOCALDIR/quizidnumber
+```
+
+If your Moodle root is itself a Git repository and you committed the plugin
+directly into it, use `git rm -r` and commit instead, so the removal is
+recorded:
+
+```bash
+git rm -r -f $LOCALDIR/quizidnumber
+git commit -m "Remove local_quizidnumber"
+```
+
+### 3. Purge caches
+
+**Site administration → Development → Purge caches.** The watermark CSS is
+cached, so students may keep seeing it on quiz pages until you do this.
 
 ## Development
 

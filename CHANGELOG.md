@@ -17,6 +17,16 @@ this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
   what to include. `pix/` was missing from the 1.0.1 package for exactly that
   reason.
 
+### Fixed
+
+- README uninstall instructions for submodule installs were incomplete. The
+  documented sequence left the submodule's Git directory behind under
+  `.git/modules/`, which blocks re-adding the plugin at the same path later,
+  and never committed the removal. The Uninstalling section now covers all
+  three installation methods separately, explains what each command clears, and
+  warns that `git submodule deinit -f` discards uncommitted edits inside the
+  plugin directory.
+
 ## [1.0.3] — 2026-08-08
 
 Documentation-only release. No code change — upgrading is optional and only
