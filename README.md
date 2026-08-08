@@ -183,6 +183,7 @@ Users without an ID number see the "Not set" placeholder instead.
 | `classes/privacy/provider.php` | Declares the plugin as null-provider for GDPR |
 | `lang/en/local_quizidnumber.php` | English strings |
 | `styles.css` | Positions, rotates and tints the watermark |
+| `pix/` | Plugin icon and logo (`icon.svg`, `logo.svg`) — artwork only, not referenced by the code |
 
 On every page load Moodle fires
 `before_standard_top_of_body_html_generation`. The callback checks the page type

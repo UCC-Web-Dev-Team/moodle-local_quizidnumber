@@ -7,6 +7,10 @@ this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+### Added
+
+- `pix/icon.svg` and `pix/logo.svg` — plugin artwork, previously untracked.
+
 ### Removed
 
 - Unused `studentid` language string. It was defined but never referenced —
