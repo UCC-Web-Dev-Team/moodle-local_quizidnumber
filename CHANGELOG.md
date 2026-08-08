@@ -5,16 +5,25 @@ All notable changes to `local_quizidnumber` are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and
 this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.0.2] — 2026-08-08
+
+Tidy-up release. No change to what the plugin does or how it behaves on a site.
 
 ### Added
 
-- `pix/icon.svg` and `pix/logo.svg` — plugin artwork, previously untracked.
+- `pix/icon.svg` and `pix/logo.svg` — plugin artwork, previously untracked and
+  therefore missing from the 1.0.1 package.
 
 ### Removed
 
 - Unused `studentid` language string. It was defined but never referenced —
-  the watermark renders the ID number on its own, with no label prefix.
+  the watermark renders the ID number on its own, with no label prefix. Sites
+  carrying a local override or translation for this key can drop it; Moodle
+  ignores orphaned overrides, so nothing breaks if they don't.
+
+### Notes
+
+- Plugin version: `2026080801`.
 
 ## [1.0.1] — 2026-08-08
 
@@ -71,5 +80,6 @@ First stable release.
 - Requires Moodle 4.4 (`2024042200`) or later for the hook API.
 - Plugin version: `2026063000`.
 
+[1.0.2]: https://github.com/UCC-Web-Dev-Team/moodle-local_quizidnumber/releases/tag/v1.0.2
 [1.0.1]: https://github.com/UCC-Web-Dev-Team/moodle-local_quizidnumber/releases/tag/v1.0.1
 [1.0.0]: https://github.com/UCC-Web-Dev-Team/moodle-local_quizidnumber/releases/tag/v1.0.0
