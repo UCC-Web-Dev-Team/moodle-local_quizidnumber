@@ -32,6 +32,7 @@ No settings, no database tables, no capabilities of its own.
 | PHP | As required by your Moodle version |
 | Plugin type | `local` |
 | Component | `local_quizidnumber` |
+| Tested against | Moodle 4.4, 4.5, 5.0, 5.1 and 5.2 on PHP 8.1–8.3, PostgreSQL and MariaDB — see [Development](#development) |
 
 Moodle 4.4 introduced the hook API this plugin uses
 (`\core\hook\output\before_standard_top_of_body_html_generation`). It will not
@@ -184,6 +185,8 @@ Users without an ID number see the "Not set" placeholder instead.
 | `lang/en/local_quizidnumber.php` | English strings |
 | `styles.css` | Positions, rotates and tints the watermark |
 | `pix/` | Plugin icon and logo (`icon.svg`, `logo.svg`) — artwork only, not referenced by the code |
+| `LICENSE` | Full GNU GPL v3 text, shipped with the plugin |
+| `.github/workflows/ci.yml` | Moodle Plugin CI, run on every push and pull request |
 
 On every page load Moodle fires
 `before_standard_top_of_body_html_generation`. The callback checks the page type
@@ -197,8 +200,9 @@ The overlay is marked `aria-hidden="true"` so screen readers ignore it.
 
 Edit `styles.css` and purge caches afterwards.
 
-- **Opacity / colour** — `.local-quizidnumber-wm-item { color: rgba(128, 128, 128, 0.08); }`.
-  Raise the alpha to make it more visible, lower it to make it subtler.
+- **Opacity / colour** — `.local-quizidnumber-wm-item { color: rgba(128, 128, 128, 0.12); }`.
+  Raise the alpha to make it more visible, lower it to make it subtler. The
+  `@media print` block sets its own, slightly stronger value.
 - **Text size** — `font-size` on the same rule.
 - **Density** — the `gap` on `.local-quizidnumber-watermark`, and
   `WATERMARK_TILES` in `classes/hook_callbacks.php`.
@@ -250,6 +254,30 @@ Adjust the `z-index` on `.local-quizidnumber-watermark`.
    `rm -rf $LOCALDIR/quizidnumber` for a plain clone (`local/quizidnumber` on
    4.x, `public/local/quizidnumber` on the Moodle 5.0+ layout).
 3. Purge caches.
+
+## Development
+
+Every push and pull request runs
+[moodle-plugin-ci](https://github.com/moodlehq/moodle-plugin-ci) through GitHub
+Actions: PHP lint, the Moodle Code Checker (`phpcs`), the PHPDoc checker, plugin
+validation, upgrade savepoints, Mustache lint, Grunt, PHPUnit and Behat.
+
+The matrix pairs each supported Moodle branch with a PHP version that branch
+actually accepts, and alternates the database so both are exercised:
+
+| Moodle branch | PHP | Database |
+|---|---|---|
+| `MOODLE_404_STABLE` | 8.1 | PostgreSQL |
+| `MOODLE_405_STABLE` | 8.2 | MariaDB |
+| `MOODLE_500_STABLE` | 8.2 | PostgreSQL |
+| `MOODLE_501_STABLE` | 8.3 | MariaDB |
+| `MOODLE_502_STABLE` | 8.3 | PostgreSQL |
+
+Moodle 4.4/4.5 require PHP 8.1 or later, 5.0/5.1 require 8.2, and 5.2 requires
+8.3 — so the combinations are listed explicitly rather than generated as a
+cross-product, which would produce pairs Moodle rejects.
+
+Releases are tagged only from a commit with a green run.
 
 ## Contributing
 
