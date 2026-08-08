@@ -5,14 +5,25 @@ All notable changes to `local_quizidnumber` are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and
 this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.0.3] — 2026-08-08
+
+Documentation-only release. No code change — upgrading is optional and only
+matters if you want the corrected README in your installed copy.
 
 ### Fixed
 
 - README documented the watermark opacity as `0.08`; it has been `0.12` since
   the value was nudged up, so anyone following the customising notes was
-  starting from the wrong number. Also documented `LICENSE`, the CI workflow
-  and the tested Moodle/PHP/database combinations.
+  starting from the wrong number.
+
+### Added
+
+- README now documents `LICENSE`, the CI workflow, and a Development section
+  listing the Moodle, PHP and database combinations covered by CI.
+
+### Notes
+
+- Plugin version: `2026080802`.
 
 ## [1.0.2] — 2026-08-08
 
@@ -89,6 +100,7 @@ First stable release.
 - Requires Moodle 4.4 (`2024042200`) or later for the hook API.
 - Plugin version: `2026063000`.
 
+[1.0.3]: https://github.com/UCC-Web-Dev-Team/moodle-local_quizidnumber/releases/tag/v1.0.3
 [1.0.2]: https://github.com/UCC-Web-Dev-Team/moodle-local_quizidnumber/releases/tag/v1.0.2
 [1.0.1]: https://github.com/UCC-Web-Dev-Team/moodle-local_quizidnumber/releases/tag/v1.0.1
 [1.0.0]: https://github.com/UCC-Web-Dev-Team/moodle-local_quizidnumber/releases/tag/v1.0.0

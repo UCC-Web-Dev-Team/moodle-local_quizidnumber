@@ -94,9 +94,9 @@ when it was added. To pin it to a released version:
 
 ```bash
 git -C $LOCALDIR/quizidnumber fetch --tags
-git -C $LOCALDIR/quizidnumber checkout v1.0.2
+git -C $LOCALDIR/quizidnumber checkout v1.0.3
 git add $LOCALDIR/quizidnumber
-git commit -m "Pin local_quizidnumber to v1.0.2"
+git commit -m "Pin local_quizidnumber to v1.0.3"
 ```
 
 **Cloning a Moodle root that already has the submodule:**
@@ -134,7 +134,7 @@ Use this if your Moodle root is not under version control.
 cd /path/to/moodle/$LOCALDIR      # e.g. .../moodle/local or .../moodle/public/local
 git clone git@github.com:UCC-Web-Dev-Team/moodle-local_quizidnumber.git quizidnumber
 cd quizidnumber
-git checkout v1.0.2
+git checkout v1.0.3
 ```
 
 ### Option 3 — ZIP upload
