@@ -277,7 +277,27 @@ Moodle 4.4/4.5 require PHP 8.1 or later, 5.0/5.1 require 8.2, and 5.2 requires
 8.3 — so the combinations are listed explicitly rather than generated as a
 cross-product, which would produce pairs Moodle rejects.
 
-Releases are tagged only from a commit with a green run.
+### Cutting a release
+
+Releases are automated. Bump `$plugin->version` and `$plugin->release` in
+`version.php`, add the matching section to `CHANGELOG.md`, then push a `v*` tag:
+
+```bash
+git tag -a v1.2.3 -m "local_quizidnumber 1.2.3"
+git push origin v1.2.3
+```
+
+The `release` job in the workflow then:
+
+1. Waits for the full test matrix to pass — a tag whose code fails CI never
+   produces a release.
+2. Fails the build if the tag doesn't match `$plugin->release`, so a forgotten
+   version bump can't ship.
+3. Builds `local_quizidnumber.zip` with `git archive`, which includes every
+   tracked file except those marked `export-ignore` in `.gitattributes` (the
+   CI config and Git metadata). New files are packaged automatically.
+4. Publishes the release, using that version's `CHANGELOG.md` section as the
+   notes.
 
 ## Contributing
 

@@ -5,6 +5,18 @@ All notable changes to `local_quizidnumber` are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and
 this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- `release` job in the CI workflow: pushing a `v*` tag now builds and publishes
+  the plugin ZIP automatically, gated on the test matrix passing and on the tag
+  matching `$plugin->release` in `version.php`.
+- `.gitattributes` marking the CI config and Git metadata `export-ignore`, so
+  the packaged ZIP is built by excluding a short list rather than enumerating
+  what to include. `pix/` was missing from the 1.0.1 package for exactly that
+  reason.
+
 ## [1.0.3] — 2026-08-08
 
 Documentation-only release. No code change — upgrading is optional and only
