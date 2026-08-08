@@ -27,4 +27,3 @@ defined('MOODLE_INTERNAL') || die();
 $string['noidnumber'] = 'Not set';
 $string['pluginname'] = 'Quiz student ID number';
 $string['privacy:metadata'] = 'The Quiz student ID number plugin does not store any personal data; it only displays the existing ID number of the student who owns the quiz attempt.';
-$string['studentid'] = 'Student ID';

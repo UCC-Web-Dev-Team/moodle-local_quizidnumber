@@ -5,6 +5,13 @@ All notable changes to `local_quizidnumber` are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and
 this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Removed
+
+- Unused `studentid` language string. It was defined but never referenced —
+  the watermark renders the ID number on its own, with no label prefix.
+
 ## [1.0.1] — 2026-08-08
 
 Housekeeping release addressing the Moodle plugin review findings. No change to
