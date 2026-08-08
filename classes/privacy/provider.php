@@ -28,7 +28,6 @@ namespace local_quizidnumber\privacy;
  * This plugin only reads and displays existing user data; it stores nothing.
  */
 class provider implements \core_privacy\local\metadata\null_provider {
-
     /**
      * Reason why this plugin stores no personal data.
      *

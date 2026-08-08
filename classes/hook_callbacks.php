@@ -30,7 +30,6 @@ use core\hook\output\before_standard_top_of_body_html_generation;
  * Callbacks that inject the student ID number into quiz pages.
  */
 class hook_callbacks {
-
     /** @var string[] Page types where the ID number should be shown. */
     private const TARGET_PAGETYPES = ['mod-quiz-attempt', 'mod-quiz-review'];
 

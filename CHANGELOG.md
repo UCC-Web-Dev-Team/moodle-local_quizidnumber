@@ -5,7 +5,10 @@ All notable changes to `local_quizidnumber` are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and
 this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.0.1] — 2026-08-08
+
+Housekeeping release addressing the Moodle plugin review findings. No change to
+what the plugin does or how it behaves on a site.
 
 ### Added
 
@@ -20,6 +23,17 @@ this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Repository renamed to `moodle-local_quizidnumber` to follow the recommended
   `moodle-{plugintype}_{pluginname}` pattern. The plugin directory inside
   Moodle is unchanged and must still be `local/quizidnumber`.
+
+### Fixed
+
+- Coding-style violations reported by the Moodle Code Checker on the first CI
+  run: a blank line after the opening brace of `hook_callbacks` and `provider`
+  (`PSR12.Classes.OpeningBraceSpace`), and the English language strings not
+  being in alphabetical order (`moodle.Files.LangFilesOrdering`).
+
+### Notes
+
+- Plugin version: `2026080800`.
 
 ## [1.0.0] — 2026-07-26
 
@@ -46,4 +60,5 @@ First stable release.
 - Requires Moodle 4.4 (`2024042200`) or later for the hook API.
 - Plugin version: `2026063000`.
 
+[1.0.1]: https://github.com/UCC-Web-Dev-Team/moodle-local_quizidnumber/releases/tag/v1.0.1
 [1.0.0]: https://github.com/UCC-Web-Dev-Team/moodle-local_quizidnumber/releases/tag/v1.0.0
